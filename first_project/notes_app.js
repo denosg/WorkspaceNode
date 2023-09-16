@@ -1,3 +1,5 @@
-const getNotes = require('./notes.js')
+const validator = require('validator').default;
 
-console.log(getNotes('nu'))
+const isEmail = validator.isEmail('cacat.cacat@cacat.com');
+
+console.log(isEmail);
