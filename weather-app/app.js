@@ -25,6 +25,8 @@ const forecast = require('./utils/forecast');
 //    - Coordinate error, pass string for error
 //    - Success, pass forecast string for data (same format as from before)
 
+console.log(process.argv);
+
 forecast.forecast(-75.7088, 44.1545, (error, data) => {
     console.log('Error', error)
     console.log('Data', data)
