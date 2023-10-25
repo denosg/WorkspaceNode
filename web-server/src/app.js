@@ -7,19 +7,25 @@ const app = express()
 // app.com/about
 
 app.get('', (req, res) => {
-    res.send('suge-o')
+    res.send('<h1>suge-o</h1>')
 })
 
 app.get('/help', (req, res) => {
-    res.send('ajuta-ma <3')
+    res.send({
+        name: 'Denis',
+        age: 20,
+    })
 })
 
 app.get('/about', (req, res) => {
-    res.send('despre mn')
+    res.send('<h1>Despre mn</h1>')
 })
 
 app.get('/weather', (req, res) => {
-    res.send('ploua afara drq')
+    res.send({
+        forecast: 'cacat',
+        location: 'zalau'
+    })
 })
 
 app.listen(port = 3000, () => {
