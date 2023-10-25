@@ -47,6 +47,20 @@ app.get('/weather', (req, res) => {
     })
 })
 
+app.get('/help/*', (req, res) => {
+    res.render('error', {
+        errorMessage: 'This article is not available',
+        name: 'Costelas'
+    })
+})
+
+app.get('*', (req, res) => {
+    res.render('error', {
+        errorMessage: 'Page not found',
+        name: 'Costelas'
+    })
+})
+
 app.listen(port = 3000, () => {
     console.log(`Server is up on port ${port}`)
 })
