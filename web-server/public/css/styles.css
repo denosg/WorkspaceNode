@@ -27,6 +27,20 @@ h1 {
     margin-bottom: 16px;
 }
 
+input {
+    border: 1px solid #cccccc;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+button {
+    cursor: pointer;
+    border: 1px solid #888888;
+    background: #888888;
+    color: white;
+    padding: 5px;
+}
+
 header a {
     color: #888888;
     margin-right: 16px;

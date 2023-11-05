@@ -3,19 +3,29 @@
 
 <head>
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="./js/app.js"></script>
 </head>
 
 <body>
     <div class="main-content">
         {{>header}}
-    </div>
 
-    <p>Use this site to get your weather</p>
+        <p>Use this site to get your weather</p>
+
+        <form>
+            <input id="latitudeInput" placeholder="Latitude" type="number">
+        </form>
+        <form>
+            <input id="longitudeInput" placeholder="Longitude" type="number">
+            <button id="searchButton">Search</button>
+        </form>
+
+        <p id="messageOne"></p>
+        <p id="messageTwo"></p>
+    </div>
 </body>
 
-<footer>
-    {{>footer}}
-</footer>
+{{>footer}}
+
+<script src="./js/app.js"></script>
 
 </html>
