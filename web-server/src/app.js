@@ -1,6 +1,8 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
+const forecast = require('../src/utils/forecast');
+const request = require('postman-request');
 
 const app = express()
 
@@ -41,21 +43,33 @@ app.get('/help', (req, res) => {
 
 
 app.get('/weather', (req, res) => {
-    if(!req.query.address) {
+    if (!req.query.latitude) {
         return res.send({
-            error: 'You must provide an addres term',
+            error: 'You must provide a latitude term',
+        })
+    }
+    if (!req.query.longitude) {
+        return res.send({
+            error: 'You must provide a longitude term',
         })
     }
 
-    res.send({
-        forecast: 'cacat',
-        location: 'zalau',
-        address: req.query.address,
-    })
+    forecast.forecast(req.query.latitude, req.query.longitude, (error, data) => {
+        if(error){
+            return res.send({
+                error: error,
+            })
+        }
+        res.send({
+            forecast: 'cacat',
+            location: 'zalau',
+            address: data,
+        })
+    });
 })
 
 app.get('/products', (req, res) => {
-    if(!req.query.search) {
+    if (!req.query.search) {
         return res.send({
             error: 'You must provide a search term',
         })
