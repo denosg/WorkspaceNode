@@ -1,3 +1,18 @@
+const doWorkCallback = (callback) => {
+    setTimeout(() => {
+        // callback('This is my err', undefined)
+        callback(undefined, [1, 4, 6])
+    }, 2000)
+}
+
+doWorkCallback((err, res) => {
+    if (err) {
+        return console.log(err)
+    }
+
+    console.log(res)
+})
+
 // setTimeout(() => {
 //     console.log('Two seconds are up');
 // }, 2000);
@@ -30,7 +45,7 @@
 // 4. Test your work!
 
 const add = (num1, num2, callback) => {
-    setTimeout(() => { 
+    setTimeout(() => {
         const sum = num1 + num2;
         callback(sum);
     }, 2000);
