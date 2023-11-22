@@ -4,10 +4,16 @@ mongoose.connect("mongodb://127.0.0.1:27017/task-manager-api")
 
 const User = mongoose.model("User", {
     name: {
-        type: String
+        type: String,
+        required: true,
     },
     age: {
-        type: Number
+        type: Number,
+        validate(value) {
+            if(value < 0){
+                throw new Error("Age must be positive number")
+            }
+        }
     }
 })
 
@@ -24,7 +30,8 @@ const User = mongoose.model("User", {
 
 const Task = mongoose.model("Task", {
     description: {
-        type: String
+        type: String,
+        required: true,
     },
     isDone: {
         type: Boolean
