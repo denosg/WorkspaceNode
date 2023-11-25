@@ -1,7 +1,6 @@
-const mongoose = require('mongoose').default;
-const validator = require('validator').default;
-
-const userSChema = mongoose.Schema({
+import mongoose from 'mongoose';
+import validator from 'validator';
+const userSChema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -14,7 +13,7 @@ const userSChema = mongoose.Schema({
         minLength: 6,
         validate(value) {
             if (value.toLowerCase().includes('password')) {
-                throw new Error(`Password cannot contain "password"`)
+                throw new Error(`Password cannot contain "password"`);
             }
         }
     },
@@ -23,7 +22,7 @@ const userSChema = mongoose.Schema({
         type: Number,
         validate(value) {
             if (value < 0) {
-                throw new Error("Age must be positive number")
+                throw new Error("Age must be positive number");
             }
         }
     },
@@ -34,12 +33,11 @@ const userSChema = mongoose.Schema({
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
-                throw new Error("Email is invalid")
+                throw new Error("Email is invalid");
             }
         }
     }
-})
-
-const User = mongoose.model("User", userSChema)
-
-module.exports = User;
+});
+const User = mongoose.model("User", userSChema);
+export default User;
+//# sourceMappingURL=user.js.map
