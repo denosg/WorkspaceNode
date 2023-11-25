@@ -6,7 +6,10 @@
         "sourceMap": true,
         "outDir": "dist"
     },
-    "include": ["src/**/*"],
+    "include": [
+        "src/**/*",
+        "playground/**/*"
+    ],
     "exclude": [
         "node_modules"
     ]
