@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 
-const userSChema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -33,13 +34,23 @@ const userSChema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         validate(value) {
-            if (!validator.isEmail(value)) {
+            if (!validator.default.isEmail(value)) {
                 throw new Error("Email is invalid")
             }
         }
     }
 })
 
-const User = mongoose.model("User", userSChema)
+userSchema.pre('save', async function (next) {
+    const user = this;
+
+    if(user.isModified('password')) {
+        user.password = await bcryptjs.hash(this.password, 8)
+    }
+    
+    next()
+})
+
+const User = mongoose.model("User", userSchema)
 
 export default User;
