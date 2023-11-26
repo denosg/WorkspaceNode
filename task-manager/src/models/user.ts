@@ -1,19 +1,22 @@
 import { Document, Model, model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
+import jwt from "jsonwebtoken";
 
-interface UserInterface extends Document {
+interface IUser extends Document {
     name: string;
     password: string;
     age: number;
     email: string;
+    tokens: [{}],
+    generateAuthToken: () => Promise<string>;
 }
 
-interface UserModelInterface extends Model<UserInterface> {
-    findByCredentials(email: string, password: string): Promise<UserInterface>;
+interface IUserModel extends Model<IUser> {
+    findByCredentials(email: string, password: string): Promise<IUser>;
 }
 
-const userSchema = new Schema<UserInterface>({
+const userSchema = new Schema<IUser>({
     name: {
         type: String,
         required: true,
@@ -50,13 +53,27 @@ const userSchema = new Schema<UserInterface>({
                 throw new Error("Email is invalid")
             }
         }
-    }
+    },
+    tokens : [{
+        token: {
+            type: String,
+            required: true,
+        }
+    }]
 });
+
+userSchema.methods.generateAuthToken = async function (): Promise<string> {
+    const user = this;
+    const token = jwt.sign({_id: user._id.toString()}, 'costelasdenissamsungs21')
+    user.tokens = user.tokens.concat({token})
+    await user.save()
+    return token
+}
 
 userSchema.statics.findByCredentials = async function (
     email: string,
     password: string
-): Promise<UserInterface> {
+): Promise<IUser> {
     const user = await this.findOne({ email });
     if (!user) {
         throw new Error('Unable to login.');
@@ -79,6 +96,6 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-const User = model<UserInterface, UserModelInterface>('User', userSchema);
+const User = model<IUser, IUserModel>('User', userSchema);
 
 export default User;
