@@ -60,6 +60,19 @@ app.patch('/users/:id', async (req, res) => {
         res.status(400).send(`Err: ${err}`);
     }
 });
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const userDoc = await User.findByIdAndDelete(_id);
+        if (!userDoc) {
+            return res.status(404).send();
+        }
+        res.send(userDoc);
+    }
+    catch (err) {
+        res.status(500).send();
+    }
+});
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body);
     try {
@@ -91,6 +104,19 @@ app.patch('/tasks/:id', async (req, res) => {
     catch (err) {
         console.error(err);
         res.status(400).send(`Err: ${err}`);
+    }
+});
+app.delete('/tasks/:id', async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const taskDoc = await Task.findByIdAndDelete(_id);
+        if (!taskDoc) {
+            return res.status(404).send();
+        }
+        res.send(taskDoc);
+    }
+    catch (err) {
+        res.status(500).send();
     }
 });
 app.get('/tasks/:id', async (req, res) => {
