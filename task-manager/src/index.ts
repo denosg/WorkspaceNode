@@ -40,6 +40,23 @@ app.get('/users/:id', async (req, res) => {
     }
 })
 
+app.patch('/users/:id', async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const userDoc = await User.findByIdAndUpdate(_id, req.body, {
+            new: true,
+            runValidators: true,
+        })
+        if (!userDoc) {
+            return res.status(404).send()
+        }
+        res.send(userDoc);
+    } catch (err) {
+        console.error(err);
+        res.status(400).send(`Err: ${err}`)
+    }
+})
+
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body)
     try {
