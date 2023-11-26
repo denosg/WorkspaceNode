@@ -1,19 +1,22 @@
 import mongoose from 'mongoose';
 
-const taskSchema =new mongoose.Schema(
-    {
-        description: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        isDone: {
-            type: Boolean,
-            default: false,
-        }
-    }
-)
+interface TaskInterface extends Document {
+  description: string;
+  isDone: boolean;
+}
 
-const Task = mongoose.model("Task", taskSchema)
+const taskSchema = new mongoose.Schema<TaskInterface>({
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  isDone: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const Task = mongoose.model<TaskInterface>('Task', taskSchema);
 
 export default Task;

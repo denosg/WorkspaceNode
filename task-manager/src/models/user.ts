@@ -1,12 +1,24 @@
-import mongoose from 'mongoose';
+import { Document, Model, model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 
-const userSchema = new mongoose.Schema({
+interface UserInterface extends Document {
+    name: string;
+    password: string;
+    age: number;
+    email: string;
+}
+
+interface UserModelInterface extends Model<UserInterface> {
+    findByCredentials(email: string, password: string): Promise<UserInterface>;
+}
+
+const userSchema = new Schema<UserInterface>({
     name: {
         type: String,
         required: true,
         trim: true,
+        unique: true,
     },
     password: {
         type: String,
@@ -39,18 +51,34 @@ const userSchema = new mongoose.Schema({
             }
         }
     }
-})
+});
 
+userSchema.statics.findByCredentials = async function (
+    email: string,
+    password: string
+): Promise<UserInterface> {
+    const user = await this.findOne({ email });
+    if (!user) {
+        throw new Error('Unable to login.');
+    }
+
+    const isMatch = await bcryptjs.compare(password, user.password);
+    if (!isMatch) {
+        throw new Error('Unable to login.');
+    }
+
+    return user;
+};
+
+//Hash plain text pass before saving
 userSchema.pre('save', async function (next) {
     const user = this;
-
-    if(user.isModified('password')) {
+    if (user.isModified('password')) {
         user.password = await bcryptjs.hash(this.password, 8)
     }
-    
     next()
 })
 
-const User = mongoose.model("User", userSchema)
+const User = model<UserInterface, UserModelInterface>('User', userSchema);
 
 export default User;

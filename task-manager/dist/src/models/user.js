@@ -1,11 +1,12 @@
-import mongoose from 'mongoose';
+import { model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true,
+        unique: true,
     },
     password: {
         type: String,
@@ -39,6 +40,18 @@ const userSchema = new mongoose.Schema({
         }
     }
 });
+userSchema.statics.findByCredentials = async function (email, password) {
+    const user = await this.findOne({ email });
+    if (!user) {
+        throw new Error('Unable to login.');
+    }
+    const isMatch = await bcryptjs.compare(password, user.password);
+    if (!isMatch) {
+        throw new Error('Unable to login.');
+    }
+    return user;
+};
+//Hash plain text pass before saving
 userSchema.pre('save', async function (next) {
     const user = this;
     if (user.isModified('password')) {
@@ -46,6 +59,6 @@ userSchema.pre('save', async function (next) {
     }
     next();
 });
-const User = mongoose.model("User", userSchema);
+const User = model('User', userSchema);
 export default User;
 //# sourceMappingURL=user.js.map
