@@ -38,7 +38,12 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 app.patch('/users/:id', async (req, res) => {
-    console.log("cacat");
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['name', 'email', 'password', 'age'];
+    const isValid = updates.every((update) => allowedUpdates.includes(update));
+    if (!isValid) {
+        return res.status(400).send({ error: 'Invalid updates !' });
+    }
     try {
         const _id = req.params.id;
         const userDoc = await User.findByIdAndUpdate(_id, req.body, {
@@ -63,6 +68,29 @@ app.post('/tasks', async (req, res) => {
     }
     catch (err) {
         res.status(400).send(err);
+    }
+});
+app.patch('/tasks/:id', async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['description', 'isDone'];
+    const isValid = updates.every((update) => allowedUpdates.includes(update));
+    if (!isValid) {
+        return res.status(400).send({ error: 'Invalid updates !' });
+    }
+    try {
+        const _id = req.params.id;
+        const taskDoc = await Task.findByIdAndUpdate(_id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!taskDoc) {
+            return res.status(404).send();
+        }
+        res.send(taskDoc);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(400).send(`Err: ${err}`);
     }
 });
 app.get('/tasks/:id', async (req, res) => {
