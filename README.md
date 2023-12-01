@@ -48,3 +48,6 @@
 
 **To start server:**
 1. run command `npm start`
+
+**To watch build:**
+1. run command `npm run watch:build`
