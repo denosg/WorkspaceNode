@@ -2,8 +2,10 @@
 rem TODO: SET THE VIDEO NUMBER HERE
 set "videoNumber=8"
 
-rem TODO: SET THE PATH HERE
-set "folderPath=D:\Cursuri\Node.js Developer Course (3rd Edition)\GetFreeCourses.Co-Udemy-The Complete Node.js Developer Course (3rd Edition)\12. API Authentication and Security (Task App)"
+rem TODO: SET VIDEO FOLDER PATH HERE
+set "videoFolderPath=12. API Authentication and Security (Task App)"
+
+set "folderPath=D:\Cursuri\Node.js Developer Course (3rd Edition)\GetFreeCourses.Co-Udemy-The Complete Node.js Developer Course (3rd Edition)\%videoFolderPath%"
 
 rem Open the specified folder
 start "" "%folderPath%"

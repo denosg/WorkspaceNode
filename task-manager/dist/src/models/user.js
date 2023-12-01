@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import jwt from "jsonwebtoken";
+const jwtSecret = 'costelasdenissamsungs21';
 const userSchema = new Schema({
     name: {
         type: String,

@@ -3,6 +3,8 @@ import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import jwt from "jsonwebtoken";
 
+const jwtSecret = 'costelasdenissamsungs21';
+
 interface IUser extends Document {
     name: string;
     password: string;
