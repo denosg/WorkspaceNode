@@ -12,6 +12,7 @@ interface IUser extends Document {
     email: string;
     tokens: [{}],
     generateAuthToken: () => Promise<string>;
+    getPublicProfile: () => any;
 }
 
 interface IUserModel extends Model<IUser> {
@@ -56,18 +57,28 @@ const userSchema = new Schema<IUser>({
             }
         }
     },
-    tokens : [{
+    tokens: [{
         token: {
             type: String,
             required: true,
         }
     }]
 });
+    
+userSchema.methods.toJSON = function (): any {
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
 
 userSchema.methods.generateAuthToken = async function (): Promise<string> {
     const user = this;
-    const token = jwt.sign({_id: user._id.toString()}, 'costelasdenissamsungs21')
-    user.tokens = user.tokens.concat({token})
+    const token = jwt.sign({ _id: user._id.toString() }, 'costelasdenissamsungs21')
+    user.tokens = user.tokens.concat({ token })
     await user.save()
     return token
 }
