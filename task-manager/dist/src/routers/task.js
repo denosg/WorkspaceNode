@@ -68,10 +68,16 @@ router.get('/tasks/:id', auth, async (req, res) => {
 });
 //GET /tasks?completed=true
 //GET /tasks?limit=NUMBER&skip=0
+//GET /tasks?sortBy=createdAt:asc || createdAt_desc --both methods are good
 router.get('/tasks', auth, async (req, res) => {
     const match = {};
+    const sort = {};
     if (req.query.isDone) {
         match.isDone = req.query.isDone === 'true';
+    }
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
     }
     try {
         await req.user.populate({
@@ -80,6 +86,7 @@ router.get('/tasks', auth, async (req, res) => {
             options: {
                 limit: parseInt(req.query.limit),
                 skip: parseInt(req.query.skip),
+                sort,
             }
         });
         res.send(req.user.tasks);
