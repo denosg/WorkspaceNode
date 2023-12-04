@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/user.js";
 import auth from "../middleware/auth.js";
+import multer from "multer";
 const router = express.Router();
 router.get('/test', (req, res) => {
     res.send('From a new file');
@@ -47,6 +48,23 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     catch (err) {
         res.status(500).send(err);
     }
+});
+const upload = multer({
+    dest: 'avatars',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|png|jpeg)$/)) {
+            return cb(new Error('Please upload an Image'));
+        }
+        cb(undefined, true);
+    }
+});
+router.post('/users/me/avatar', upload.single('avatar'), async (req, res) => {
+    res.status(200).send();
+}, (err, req, res, next) => {
+    res.status(400).send({ err: err.message });
 });
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user);

@@ -1,9 +1,9 @@
 @echo off
 rem TODO: SET THE VIDEO NUMBER HERE
-set "videoNumber=15"
+set "videoNumber=2"
 
 rem TODO: SET VIDEO FOLDER PATH HERE
-set "videoFolderPath=12. API Authentication and Security (Task App)"
+set "videoFolderPath=14. File Uploads (Task App)"
 
 set "folderPath=D:\Cursuri\Node.js Developer Course (3rd Edition)\GetFreeCourses.Co-Udemy-The Complete Node.js Developer Course (3rd Edition)\%videoFolderPath%"
 
