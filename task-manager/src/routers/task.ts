@@ -72,6 +72,7 @@ router.get('/tasks/:id', auth, async (req: any, res) => {
 })
 
 //GET /tasks?completed=true
+//GET /tasks?limit=NUMBER&skip=0
 router.get('/tasks', auth, async (req: any, res) => {
     const match: any = {}
 
@@ -82,7 +83,11 @@ router.get('/tasks', auth, async (req: any, res) => {
     try {
         await req.user.populate({
             path: 'tasks',
-            match
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+            }
         })
         res.send(req.user.tasks);
     } catch (err) {
