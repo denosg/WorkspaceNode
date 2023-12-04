@@ -127,5 +127,19 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
         res.status(500).send({ error: 'Internal Server Error' });
     }
 });
+router.get('/users/:id/avatar', async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const user = await User.findById(_id);
+        if (!user || !user.avatar) {
+            throw new Error();
+        }
+        res.set('Content-Type', 'image/png');
+        res.send(user.avatar);
+    }
+    catch (err) {
+        res.status(400).send();
+    }
+});
 export default router;
 //# sourceMappingURL=user.js.map
