@@ -2,6 +2,7 @@ import { Document, Model, model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import jwt from "jsonwebtoken";
+import { timeStamp } from 'console';
 
 const jwtSecret = 'costelasdenissamsungs21';
 
@@ -63,8 +64,14 @@ const userSchema = new Schema<IUser>({
             required: true,
         }
     }]
-});
-    
+}, { timestamps: true, });
+
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
 userSchema.methods.toJSON = function (): any {
     const user = this
     const userObject = user.toObject()

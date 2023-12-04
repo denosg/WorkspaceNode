@@ -1,8 +1,12 @@
 import Task from "../models/task.js";
 import express from "express";
+import auth from "../middleware/auth.js";
 const router = express.Router();
-router.post('/tasks', async (req, res) => {
-    const task = new Task(req.body);
+router.post('/tasks', auth, async (req, res) => {
+    const task = new Task({
+        ...req.body,
+        owner: req.user._id,
+    });
     try {
         const taskDoc = await task.save();
         res.status(201).send(task);
@@ -11,7 +15,7 @@ router.post('/tasks', async (req, res) => {
         res.status(400).send(err);
     }
 });
-router.patch('/tasks/:id', async (req, res) => {
+router.patch('/tasks/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['description', 'isDone'];
     const isValid = updates.every((update) => allowedUpdates.includes(update));
@@ -20,7 +24,7 @@ router.patch('/tasks/:id', async (req, res) => {
     }
     try {
         const _id = req.params.id;
-        const taskDoc = await Task.findById(_id);
+        const taskDoc = await Task.findOne({ _id, owner: req.user._id });
         updates.forEach((update) => taskDoc[update] = req.body[update]);
         await taskDoc.save();
         if (!taskDoc) {
@@ -33,10 +37,11 @@ router.patch('/tasks/:id', async (req, res) => {
         res.status(400).send(`Err: ${err}`);
     }
 });
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', auth, async (req, res) => {
     try {
         const _id = req.params.id;
-        const taskDoc = await Task.findByIdAndDelete(_id);
+        const ownerId = req.user._id;
+        const taskDoc = await Task.findOneAndDelete({ _id, owner: ownerId });
         if (!taskDoc) {
             return res.status(404).send();
         }
@@ -46,10 +51,12 @@ router.delete('/tasks/:id', async (req, res) => {
         res.status(500).send();
     }
 });
-router.get('/tasks/:id', async (req, res) => {
+router.get('/tasks/:id', auth, async (req, res) => {
     try {
         const _id = req.params.id;
-        const taskDoc = await Task.findById(_id);
+        const taskDoc = await Task.findOne({
+            _id, owner: req.user._id,
+        });
         if (!taskDoc) {
             return res.status(404).send();
         }
@@ -59,9 +66,9 @@ router.get('/tasks/:id', async (req, res) => {
         res.status(500).send();
     }
 });
-router.get('/tasks', async (req, res) => {
+router.get('/tasks', auth, async (req, res) => {
     try {
-        const tasksDoc = await Task.find();
+        const tasksDoc = await Task.find({ owner: req.user._id });
         if (!tasksDoc) {
             return res.status(404).send();
         }

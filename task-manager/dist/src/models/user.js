@@ -47,6 +47,11 @@ const userSchema = new Schema({
                 required: true,
             }
         }]
+}, { timestamps: true, });
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
 });
 userSchema.methods.toJSON = function () {
     const user = this;
