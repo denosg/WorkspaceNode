@@ -12,6 +12,7 @@ interface IUser extends Document {
     age: number;
     email: string;
     tokens: [{}],
+    avatar: Buffer,
     generateAuthToken: () => Promise<string>;
     getPublicProfile: () => any;
 }
@@ -63,7 +64,10 @@ const userSchema = new Schema<IUser>({
             type: String,
             required: true,
         }
-    }]
+    }],
+    avatar: {
+        type: Buffer,
+    }
 }, { timestamps: true, });
 
 userSchema.virtual('tasks', {

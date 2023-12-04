@@ -50,7 +50,6 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 });
 const upload = multer({
-    dest: 'avatars',
     limits: {
         fileSize: 1000000
     },
@@ -61,7 +60,10 @@ const upload = multer({
         cb(undefined, true);
     }
 });
-router.post('/users/me/avatar', upload.single('avatar'), async (req, res) => {
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+    const avatar = req.file.buffer;
+    req.user.avatar = avatar;
+    await req.user.save();
     res.status(200).send();
 }, (err, req, res, next) => {
     res.status(400).send({ err: err.message });
@@ -107,6 +109,22 @@ router.delete('/users/me', auth, async (req, res) => {
     }
     catch (err) {
         res.status(500).send();
+    }
+});
+router.delete('/users/me/avatar', auth, async (req, res) => {
+    try {
+        const userToken = req.token;
+        const user = await User.findOne({ 'tokens.token': userToken });
+        if (!user) {
+            return res.status(404).send({ error: 'User not found' });
+        }
+        user.avatar = null;
+        await user.save();
+        res.status(200).send();
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send({ error: 'Internal Server Error' });
     }
 });
 export default router;
