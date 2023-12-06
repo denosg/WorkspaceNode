@@ -2,7 +2,6 @@ import { Document, Model, model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import jwt from "jsonwebtoken";
-import { timeStamp } from 'console';
 
 const jwtSecret = 'costelasdenissamsungs21';
 
@@ -82,6 +81,7 @@ userSchema.methods.toJSON = function (): any {
 
     delete userObject.password
     delete userObject.tokens
+    delete userObject.avatar
 
     return userObject
 }
