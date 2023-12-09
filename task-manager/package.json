@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec ts-node -r dotenv/config dist/src/index.js",
     "watch:build": "tsc-watch --onSuccess \"npm run start\"",
-    "build": "tsc"
-  },  
+    "build": "tsc",
+    "deploy": "npm install"
+  },
   "type": "module",
   "keywords": [],
   "author": "",
