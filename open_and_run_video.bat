@@ -8,7 +8,7 @@ set "videoFolderNumber=16"
 
 set "folderPath=D:\Cursuri\Node.js Developer Course (3rd Edition)\GetFreeCourses.Co-Udemy-The Complete Node.js Developer Course (3rd Edition)"
 
-rem Construct the video filename based on the video number
+rem Construct the video folder filename based on the folder number
 set "videoFolderPath="
 for /f "delims=" %%a in ('dir /b /ad "%folderPath%" ^| findstr /r /c:"^%videoFolderNumber%\." 2^>nul') do (
     set "videoFolderPath=%%a"
@@ -25,7 +25,6 @@ if not defined videoFolderPath (
     set "videoPath=%folderPath%\%videoFolderPath%"
     start "" "%videoPath%"
     
-
     rem Pause for a moment to ensure the folder is open before launching the video
     timeout /t 2 /nobreak >nul
 
