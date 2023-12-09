@@ -2,7 +2,8 @@ import { model, Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import jwt from "jsonwebtoken";
-const jwtSecret = 'costelasdenissamsungs21';
+import dotenv from 'dotenv';
+dotenv.config({ path: 'config/dev.env' });
 const userSchema = new Schema({
     name: {
         type: String,
@@ -66,7 +67,7 @@ userSchema.methods.toJSON = function () {
 };
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id.toString() }, 'costelasdenissamsungs21');
+    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
     user.tokens = user.tokens.concat({ token });
     await user.save();
     return token;
