@@ -5,7 +5,7 @@ const port = parseInt(process.env.PORT)
 
 app.listen(port, () => {
     console.log(`Server is up on port: ${port}`);
-})
+});
 // app.use((req, res, next) => {
 //     if(req.method === "GET"){
 //         res.send('GET request are disables. Please retry later.')
