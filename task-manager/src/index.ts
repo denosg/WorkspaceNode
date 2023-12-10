@@ -1,18 +1,9 @@
-import express, { Router, json } from 'express';
 import './db/mongoose.js';
-import userRouter from "./routers/user.js";
-import taskRouter from "./routers/task.js";
 import dotenv from 'dotenv';
+import app from './app.js'
 
 dotenv.config({ path: 'config/dev.env' });
-
-const app = express()
-console.log(process.env.PORT);
-
 const port = parseInt(process.env.PORT)
-
-app.use(json())
-app.use([userRouter, taskRouter.router])
 
 app.listen(port, () => {
     console.log(`Server is up on port: ${port}`);
