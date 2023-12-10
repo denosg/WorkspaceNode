@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon dotenv -e config/dev.env --exec ts-node -r dotenv/config dist/src/index.js",
+    "start": "nodemon --exec ts-node -r dotenv/config dist/src/index.js",
     "watch:build": "tsc-watch --onSuccess \"npm run start\"",
     "build": "tsc",
     "deploy": "npm install",

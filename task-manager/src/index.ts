@@ -1,8 +1,6 @@
 import './db/mongoose.js';
-import dotenv from 'dotenv';
 import app from './app.js'
 
-dotenv.config({ path: 'config/dev.env' });
 const port = parseInt(process.env.PORT)
 
 app.listen(port, () => {
