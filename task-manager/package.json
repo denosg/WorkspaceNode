@@ -8,7 +8,7 @@
     "watch:build": "tsc-watch --onSuccess \"npm run start\"",
     "build": "tsc",
     "deploy": "npm install",
-    "test": "jest" 
+    "test": "jest --runInBand" 
   },
   "jest": {
     "setupFiles": [

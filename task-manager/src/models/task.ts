@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 interface TaskInterface extends Document {
   description: string;
   isDone: boolean;
-  owner: any;
+  owner: mongoose.Schema.Types.ObjectId;
 }
 
 const taskSchema = new mongoose.Schema<TaskInterface>({
