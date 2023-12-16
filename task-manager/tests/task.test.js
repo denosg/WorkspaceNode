@@ -1,6 +1,5 @@
 import request from 'supertest';
-import Task from "../dist/src/models/task"
-import {userOneId, userOne, setUpDatabase, userTwo, taskOne} from "./fixtures/db"
+import {userOne, setUpDatabase, userTwo, taskOne} from "./fixtures/db"
 import app from "../dist/src/app"
 
 beforeEach(async () => await setUpDatabase())

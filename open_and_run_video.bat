@@ -1,10 +1,10 @@
 @echo off
 
 rem TODO: SET THE VIDEO NUMBER HERE
-set "videoNumber=14"
+set "videoNumber=1"
 
 rem TODO: SET VIDEO FOLDER NUMBER HERE
-set "videoFolderNumber=16"
+set "videoFolderNumber=17"
 
 set "folderPath=D:\Cursuri\Node.js Developer Course (3rd Edition)\GetFreeCourses.Co-Udemy-The Complete Node.js Developer Course (3rd Edition)"
 
