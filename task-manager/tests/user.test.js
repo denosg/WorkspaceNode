@@ -29,6 +29,20 @@ test("should sign up new user", async () => {
     }).expect(201)
 })
 
+test("should get new token from login user", async () => {
+    const response = await request(app).post('/users/login').send({
+        email: userOne.email,
+        password: userOne.password,
+    }).expect(200)
+    const user = await User.findById(userOne._id)
+
+    expect(response.body.token).toBe(user.tokens[1].token)
+
+    expect(response.body).toMatchObject({
+        token: user.tokens[1].token
+    })
+})
+
 test("should not login nonexistent user", async () => {
     await request(app).post('/users/login').send({
         name: userOne.name,
